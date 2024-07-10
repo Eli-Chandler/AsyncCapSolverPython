@@ -151,8 +151,10 @@ class AsyncCapSolver:
             'Content-Type': 'application/json'
         }
 
-        async with self.__session.post('https://api.capsolver.com/' + endpoint, headers=headers, json=data) as r:
+        async with self.__session.post('https://api.capsolver.com/' + endpoint, headers=headers, json=data, ssl=False) as r:
             j = await r.json()
+            
+        await self.close()
 
         if j['errorId'] == 1:
             raise (CaptchaError(j['errorCode'], j['errorDescription']))
